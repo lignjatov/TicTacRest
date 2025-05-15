@@ -5,9 +5,10 @@ from django.contrib.auth.models import User
 
 class GameSerializer(serializers.ModelSerializer):
     creator = serializers.ReadOnlyField(source='creator.username')
+    opponent_name = serializers.CharField(source='opponent.username', read_only=True)
     class Meta:
         model = TicTacToeGame
-        fields = ['game_state', 'creator', 'opponent', 'game_board', 'winner', 'player_turn']  
+        fields = ['game_state', 'creator', 'opponent', 'opponent_name','game_board', 'winner', 'player_turn']  
     
     
 class UserSerializer(serializers.ModelSerializer):
