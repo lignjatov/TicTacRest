@@ -10,10 +10,10 @@ class TicTacToeGame(models.Model):
         FINISHED = 'Finished', _('Finshed game')
     creation_time = models.DateTimeField(auto_now_add=True)
     game_state = models.CharField(max_length=8, choices=GameState.choices, default=GameState.WAITING)
-    creator = models.ForeignKey(User, related_name="game_creator", on_delete=models.CASCADE)
-    opponent = models.ForeignKey(User, related_name="opponent", on_delete=models.SET_NULL, null=True, default=None)
+    creator = models.ForeignKey(User, related_name="created_games", on_delete=models.CASCADE)
+    opponent = models.ForeignKey(User, related_name="participated_games", on_delete=models.SET_NULL, null=True, default=None)
     game_board = models.CharField(max_length=9, default="---------")
-    winner = models.BooleanField(null=True)
+    winner = models.ForeignKey(User, related_name="winner", on_delete=models.SET_NULL, null=True, default=None)
     #Depending on the state of the boolean, if False, it is the room creators turn
     #else it will be the opponents turn
     player_turn = models.BooleanField(default=False)
