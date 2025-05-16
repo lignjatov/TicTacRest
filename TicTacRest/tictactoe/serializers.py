@@ -12,27 +12,36 @@ class GameSerializer(serializers.ModelSerializer):
         model = TicTacToeGame
         fields = ['creation_time', 'game_state', 'creator', 'opponent', 'opponent_name','game_board', 'winner', 'winner_name', 'player_turn']  
     
+#Serializer created for SwaggerUI representation
 class MoveSerializer(serializers.Serializer):
     row = serializers.IntegerField(min_value=0, max_value=2)
     col = serializers.IntegerField(min_value=0, max_value=2)
     
+#Serializer for users
 class UserSerializer(serializers.ModelSerializer):
+    #count of games played
     games = serializers.SerializerMethodField()
+    #win percentage
     won_games_percentage = serializers.SerializerMethodField()
+    #password
     password = serializers.CharField(write_only=True, required=True)
+    
     
     class Meta:
         model = User
         fields = ['username', 'password', 'games', 'won_games_percentage']
-        
+    
+    #overriden method for getting games. Used for getting the count of games    
     def get_games(self, obj):
         games = TicTacToeGame.objects.filter(Q(creator=obj) | Q(opponent=obj)).count()
-        #return GameSerializer(games, many=True).data
         return games
     
+     #overriden method for getting games. Handles math for winrate
     def get_won_games_percentage(self, obj):
         won_games = TicTacToeGame.objects.filter(winner=obj).count()
+        #This line filters all the games played by the user
         games = TicTacToeGame.objects.filter(Q(creator=obj) | Q(opponent=obj)).count()
+        #Needs to be checked in case of new user where division by 0 would happen
         if games == 0:
             return 0.0
         
