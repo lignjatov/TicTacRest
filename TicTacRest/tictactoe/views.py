@@ -34,7 +34,7 @@ class UserProfile(generics.RetrieveAPIView):
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
     lookup_field = 'username'
-    
+  
 class GameCreate(generics.CreateAPIView):
     queryset = TicTacToeGame
     serializer_class = GameSerializer
@@ -91,8 +91,6 @@ def make_move(request, game_id):
     
     if request.user.username != checking_game.creator.username and request.user.id != checking_game.opponent.id:
         return Response({'error': 'User is not participant in match.'}, status=status.HTTP_403_FORBIDDEN)
-    
-    #return Response(request.data)
 
     row = request.data.get('row')
     col = request.data.get('col')
