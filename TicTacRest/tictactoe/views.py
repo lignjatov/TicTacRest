@@ -80,13 +80,15 @@ class JoinGame(APIView):
             return Response({'Success:': 'Game joined'}, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
     
+@extend_schema(description="Returns the board state of a prticular game.")
 @api_view(['GET'])
 def get_board_state(request, game_id):
     checking_game = get_object_or_404(TicTacToeGame, id=game_id)
     return Response({'game_board': checking_game.game_board})
 
 
-@extend_schema(request=MoveSerializer)
+@extend_schema(request=MoveSerializer,
+               description="Endpoint for making a move. Expect row and col to be between and including 0 and 2")
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 def make_move(request, game_id):

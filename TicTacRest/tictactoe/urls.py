@@ -18,6 +18,7 @@ urlpatterns = [
     path("game/<int:game_id>/board/", views.get_board_state),
     path("game/<int:game_id>/move/", views.make_move),
     #drf-spectacular urls:
+    path('', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
