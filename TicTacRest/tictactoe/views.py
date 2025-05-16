@@ -38,7 +38,8 @@ class UserProfile(generics.RetrieveAPIView):
     permission_classes = [IsAuthenticated]
     lookup_field = 'username'
   
-@extend_schema(description="Game creation. No parameteres are needed. The authenticated user is set as the creator of the game and it sets itself into the Awaiting state")
+@extend_schema(description="Game creation. No parameteres are needed. The authenticated user is set as the creator of the game and it sets itself into the Awaiting state",
+               request=None)
 class GameCreate(generics.CreateAPIView):
     queryset = TicTacToeGame
     serializer_class = GameSerializer
@@ -80,7 +81,7 @@ class JoinGame(APIView):
             return Response({'Success:': 'Game joined'}, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
     
-@extend_schema(description="Returns the board state of a prticular game.")
+@extend_schema(description="Returns the board state of a particular game.")
 @api_view(['GET'])
 def get_board_state(request, game_id):
     checking_game = get_object_or_404(TicTacToeGame, id=game_id)
@@ -88,7 +89,8 @@ def get_board_state(request, game_id):
 
 
 @extend_schema(request=MoveSerializer,
-               description="Endpoint for making a move. Expect row and col to be between and including 0 and 2")
+               description="Endpoint for making a move. Expect row and col to be between and including 0 and 2",
+               )
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 def make_move(request, game_id):
