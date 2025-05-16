@@ -10,7 +10,7 @@ class GameSerializer(serializers.ModelSerializer):
     winner_name = serializers.CharField(source='winner.username', read_only=True)
     class Meta:
         model = TicTacToeGame
-        fields = ['creation_time', 'game_state', 'creator', 'opponent, 'opponent_name','game_board', 'winner', 'winner_name', 'player_turn']  
+        fields = ['creation_time', 'game_state', 'creator', 'opponent', 'opponent_name','game_board', 'winner', 'winner_name', 'player_turn']  
     
 class MoveSerializer(serializers.Serializer):
     row = serializers.IntegerField(min_value=0, max_value=2)
